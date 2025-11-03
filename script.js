@@ -2,13 +2,13 @@ let currentImageIndex = 0;
 let score = 0;
 
 let images = [
-    { src: 'image1.jpg', potato: { x: 500, y: 380 }, found: false },
+    { src: 'image1.jpg', potato: { x: 500, y: 390 }, found: false },
     { src: 'image2.jpg', potato: { x: 380, y: 120 }, found: false },
     { src: 'image3.jpg', potato: { x: 400, y: 240 }, found: false },
     { src: 'image4.jpg', potato: { x: 440, y: 100 }, found: false },
     { src: 'image5.jpg', potato: { x: 500, y: 200 }, found: false },
     { src: 'image6.jpg', potato: { x: 48, y: 190 }, found: false },
-    { src: 'image7.jpg', potato: { x: 390, y: 30}, found: false }
+    { src: 'image7.jpg', potato: { x: 390, y: 30 }, found: false }
 ];
 
 // List of "try again" messages
@@ -105,5 +105,6 @@ showImage(currentImageIndex);
 const gameImage = document.getElementById('game-image');
 gameImage.addEventListener("click", checkClick);
 gameImage.addEventListener("touchend", checkClick, { passive: true });
+
 
 
