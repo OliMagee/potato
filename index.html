@@ -9,9 +9,13 @@
 <body>
     <h1>FIND POTATO</h1>
     <div id="score">Score: 0</div>
-    <div id="message"></div>
+    
+    <img id="game-image" src="image1.jpg" alt="Game Image" onclick="checkClick(event)">
 
-    <img id="game-image" src="image1.png" alt="Game Image" onclick="checkClick(event)">
+    <!-- Message container below the image -->
+    <div id="message-container">
+        <div id="message"></div>
+    </div>
 
     <div class="button-container">
         <button id="prevButton" onclick="showPrevImage()">Previous</button>

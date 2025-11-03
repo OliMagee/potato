@@ -3,8 +3,8 @@ let score = 0;
 
 let images = [
     { src: 'image1.jpg', potato: { x: 500, y: 400 }, found: false },
-    { src: 'image2.jpg', potato: { x: 380, y: 100 }, found: false },
-    { src: 'image3.jpg', potato: { x: 390, y: 30 }, found: false },
+    { src: 'image2.jpg', potato: { x: 380, y: 110 }, found: false },
+    { src: 'image3.jpg', potato: { x: 390, y: 22 }, found: false },
     { src: 'image4.jpg', potato: { x: 440, y: 100 }, found: false },
     { src: 'image5.jpg', potato: { x: 500, y: 200 }, found: false }
 ];
@@ -19,9 +19,9 @@ const tryAgainMessages = [
 ];
 
 function showImage(index) {
-    const image = images[index];
     const gameImage = document.getElementById('game-image');
-    gameImage.src = image.src;
+    const image = images[index];
+    gameImage.src = image.src;  // Just change the image source
 
     // Reset the message
     document.getElementById('message').innerHTML = '';
@@ -36,15 +36,27 @@ function checkClick(event) {
         return;  // Don't process further if the potato is already found
     }
 
+    // If it's a touch event, use the touch coordinates instead of clientX/clientY
+    let x, y;
+    if (event.type === "touchstart") {
+        const touch = event.touches[0]; // Get the first touch point
+        x = touch.clientX;
+        y = touch.clientY;
+    } else {
+        x = event.clientX; // Mouse click position
+        y = event.clientY;
+    }
+
+    // Get the image's position
     const rect = event.target.getBoundingClientRect();
 
     // Calculate the click position relative to the image
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const relativeX = x - rect.left;
+    const relativeY = y - rect.top;
 
     // Check if the click is within the potato's coordinates
     const potato = image.potato;
-    if (Math.abs(x - potato.x) < 30 && Math.abs(y - potato.y) < 30) {
+    if (Math.abs(relativeX - potato.x) < 30 && Math.abs(relativeY - potato.y) < 30) {
         // Increase score only if the potato has not been found already
         score++;
         document.getElementById('score').innerText = `Score: ${score}`;
@@ -53,7 +65,7 @@ function checkClick(event) {
         image.found = true;
 
         // Show success message
-        document.getElementById('message').innerText = 'Potato!';
+        document.getElementById('message').innerText = 'You found the potato! 🎉';
     } else {
         // Randomize "try again" messages
         const randomMessage = tryAgainMessages[Math.floor(Math.random() * tryAgainMessages.length)];
@@ -76,3 +88,6 @@ function showPrevImage() {
 // Initialize the game by showing the first image
 showImage(currentImageIndex);
 
+// Add event listeners for both mouse and touch events
+document.getElementById('game-image').addEventListener("click", checkClick);
+document.getElementById('game-image').addEventListener("touchstart", checkClick);

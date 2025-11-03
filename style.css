@@ -50,11 +50,17 @@ h1 {
     font-weight: bold;
 }
 
-/* Message Display Styling */
+/* Message Container Styling */
+#message-container {
+    margin-top: 20px; /* Space below the image */
+}
+
+/* Message Styling */
 #message {
     font-size: 1.5rem;
-    margin-top: 10px;
-    color: black;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
 }
 
 /* Button Container */
