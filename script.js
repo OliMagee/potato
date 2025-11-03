@@ -6,7 +6,8 @@ let images = [
     { src: 'image2.jpg', potato: { x: 380, y: 120 }, found: false },
     { src: 'image3.jpg', potato: { x: 390, y: 30 }, found: false },
     { src: 'image4.jpg', potato: { x: 440, y: 100 }, found: false },
-    { src: 'image5.jpg', potato: { x: 500, y: 200 }, found: false }
+    { src: 'image5.jpg', potato: { x: 500, y: 200 }, found: false },
+    { src: 'image6.jpg', potato: { x: 48, y: 190 }, found: false }
 ];
 
 // List of "try again" messages
@@ -103,3 +104,4 @@ showImage(currentImageIndex);
 const gameImage = document.getElementById('game-image');
 gameImage.addEventListener("click", checkClick);
 gameImage.addEventListener("touchend", checkClick, { passive: true });
+
