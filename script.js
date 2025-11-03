@@ -1,75 +1,77 @@
-// script.js
+let currentImageIndex = 0;
+let score = 0;
 
-// Define the images and their hidden potato locations (coordinates)
-const gameData = [
-    { 
-        image: 'image1.jpg', 
-        potatoLocation: { x: 250, y: 200 } // Potato location for image 1
-    },
-    { 
-        image: 'image2.jpg', 
-        potatoLocation: { x: 300, y: 150 } // Potato location for image 2
-    },
-    { 
-        image: 'image3.jpg', 
-        potatoLocation: { x: 100, y: 250 } // Potato location for image 3
-    },
-    { 
-        image: 'image4.jpg', 
-        potatoLocation: { x: 400, y: 300 } // Potato location for image 4
-    },
-    { 
-        image: 'image5.jpg', 
-        potatoLocation: { x: 350, y: 400 } // Potato location for image 5
-    }
+let images = [
+    { src: 'image1.jpg', potato: { x: 500, y: 400 }, found: false },
+    { src: 'image2.jpg', potato: { x: 380, y: 100 }, found: false },
+    { src: 'image3.jpg', potato: { x: 390, y: 22 }, found: false },
+    { src: 'image4.jpg', potato: { x: 440, y: 100 }, found: false },
+    { src: 'image5.jpg', potato: { x: 500, y: 200 }, found: false }
 ];
 
-let currentLevel = 0;  // Keeps track of the current image
+// List of "try again" messages
+const tryAgainMessages = [
+    'No potato',
+    'Nope',
+    'Not there',
+    'Close',
+    'Try again',
+];
 
-const gameImage = document.getElementById('game-image');
-const messageDiv = document.getElementById('message');
-const nextButton = document.getElementById('nextButton');
+function showImage(index) {
+    const image = images[index];
+    const gameImage = document.getElementById('game-image');
+    gameImage.src = image.src;
 
-// Function to load the next image and set the potato location
-function loadImage(level) {
-    const data = gameData[level];
-    gameImage.src = data.image;
-    gameImage.setAttribute('data-x', data.potatoLocation.x);
-    gameImage.setAttribute('data-y', data.potatoLocation.y);
-    messageDiv.textContent = ''; // Reset message
-    nextButton.style.display = 'none'; // Hide Next button
+    // Reset the message
+    document.getElementById('message').innerHTML = '';
 }
 
-// When the image is clicked, check if the click is near the potato
-gameImage.addEventListener('click', function(event) {
-    const rect = gameImage.getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-    const clickY = event.clientY - rect.top;
+function checkClick(event) {
+    const image = images[currentImageIndex];
 
-    const potatoX = parseInt(gameImage.getAttribute('data-x'));
-    const potatoY = parseInt(gameImage.getAttribute('data-y'));
-    const tolerance = 30; // Define tolerance range for click (pixels)
-
-    if (Math.abs(clickX - potatoX) < tolerance && Math.abs(clickY - potatoY) < tolerance) {
-        messageDiv.textContent = 'You found the potato!';
-        messageDiv.style.color = 'green';
-        nextButton.style.display = 'inline-block'; // Show Next button
-    } else {
-        messageDiv.textContent = 'Try again!';
-        messageDiv.style.color = 'red';
+    // Check if the potato has already been found for the current image
+    if (image.found) {
+        document.getElementById('message').innerText = 'You already found the potato';
+        return;  // Don't process further if the potato is already found
     }
-});
 
-// Move to the next level when the Next button is clicked
-nextButton.addEventListener('click', function() {
-    if (currentLevel < gameData.length - 1) {
-        currentLevel++;
-        loadImage(currentLevel);
+    const rect = event.target.getBoundingClientRect();
+
+    // Calculate the click position relative to the image
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // Check if the click is within the potato's coordinates
+    const potato = image.potato;
+    if (Math.abs(x - potato.x) < 30 && Math.abs(y - potato.y) < 30) {
+        // Increase score only if the potato has not been found already
+        score++;
+        document.getElementById('score').innerText = `Score: ${score}`;
+
+        // Mark the potato as found
+        image.found = true;
+
+        // Show success message
+        document.getElementById('message').innerText = 'Potato!';
     } else {
-        messageDiv.textContent = 'Congratulations! You found all the potatoes!';
-        nextButton.style.display = 'none'; // Hide Next button when all levels are completed
+        // Randomize "try again" messages
+        const randomMessage = tryAgainMessages[Math.floor(Math.random() * tryAgainMessages.length)];
+        document.getElementById('message').innerText = randomMessage;
     }
-});
+}
 
-// Load the first image when the page loads
-loadImage(currentLevel);
+function showNextImage() {
+    // Reset the found flag for the next image
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    showImage(currentImageIndex);
+}
+
+function showPrevImage() {
+    // Reset the found flag for the previous image
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    showImage(currentImageIndex);
+}
+
+// Initialize the game by showing the first image
+showImage(currentImageIndex);
