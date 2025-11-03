@@ -2,9 +2,9 @@ let currentImageIndex = 0;
 let score = 0;
 
 let images = [
-    { src: 'image1.jpg', potato: { x: 500, y: 400 }, found: false },
-    { src: 'image2.jpg', potato: { x: 380, y: 100 }, found: false },
-    { src: 'image3.jpg', potato: { x: 390, y: 22 }, found: false },
+    { src: 'image1.jpg', potato: { x: 500, y: 390 }, found: false },
+    { src: 'image2.jpg', potato: { x: 380, y: 120 }, found: false },
+    { src: 'image3.jpg', potato: { x: 390, y: 30 }, found: false },
     { src: 'image4.jpg', potato: { x: 440, y: 100 }, found: false },
     { src: 'image5.jpg', potato: { x: 500, y: 200 }, found: false }
 ];
@@ -24,7 +24,7 @@ function showImage(index) {
     const image = images[index];
     gameImage.src = image.src;  // Just change the image source
 
-    // Reset the message
+    // Reset the message when changing images
     document.getElementById('message').innerHTML = '';
 }
 
@@ -32,11 +32,9 @@ function showImage(index) {
 function checkClick(event) {
     const image = images[currentImageIndex];
 
-    // Check if the potato has already been found for the current image
+    // If the potato has already been found, stop further updates (no further changes to text)
     if (image.found) {
-        // If the potato was found already, show the "already found" message
-        document.getElementById('message').innerText = 'You already found the potato';
-        return;  // Exit the function if the potato is already found
+        return;  // Do nothing if the potato has already been found
     }
 
     let x, y;
@@ -54,16 +52,9 @@ function checkClick(event) {
     // Get the position of the image in the viewport
     const rect = event.target.getBoundingClientRect();
 
-    // Log the touch/click coordinates and the image position for debugging
-    console.log('Click/Tap coordinates: ', x, y);
-    console.log('Image rect: ', rect);
-
     // Calculate the click position relative to the image
     const relativeX = x - rect.left;
     const relativeY = y - rect.top;
-
-    // Log the relative click position for debugging
-    console.log('Relative position inside image: ', relativeX, relativeY);
 
     // Get the scale factor based on the image's displayed size
     const scaleX = rect.width / 600;  // Assuming the original image width is 600px
@@ -72,9 +63,6 @@ function checkClick(event) {
     // Scale the potato's coordinates based on the displayed size of the image
     const scaledPotatoX = image.potato.x * scaleX;
     const scaledPotatoY = image.potato.y * scaleY;
-
-    // Log the scaled potato position
-    console.log('Scaled potato position: ', scaledPotatoX, scaledPotatoY);
 
     // Check if the click is within the scaled potato's coordinates
     if (Math.abs(relativeX - scaledPotatoX) < 30 && Math.abs(relativeY - scaledPotatoY) < 30) {
@@ -85,7 +73,7 @@ function checkClick(event) {
         // Mark the potato as found
         image.found = true;
 
-        // Show success message with potato emoji
+        // Show the potato emoji message
         document.getElementById('message').innerText = '🥔';
     } else {
         // Randomize "try again" messages
