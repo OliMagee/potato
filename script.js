@@ -65,7 +65,7 @@ function checkClick(event) {
         image.found = true;
 
         // Show success message
-        document.getElementById('message').innerText = 'You found the potato! 🎉';
+        document.getElementById('message').innerText = '🥔';
     } else {
         // Randomize "try again" messages
         const randomMessage = tryAgainMessages[Math.floor(Math.random() * tryAgainMessages.length)];
@@ -91,3 +91,4 @@ showImage(currentImageIndex);
 // Add event listeners for both mouse and touch events
 document.getElementById('game-image').addEventListener("click", checkClick);
 document.getElementById('game-image').addEventListener("touchstart", checkClick);
+
