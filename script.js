@@ -4,7 +4,7 @@ let score = 0;
 let images = [
     { src: 'image1.jpg', potato: { x: 500, y: 400 }, found: false },
     { src: 'image2.jpg', potato: { x: 380, y: 100 }, found: false },
-    { src: 'image3.jpg', potato: { x: 390, y: 22 }, found: false },
+    { src: 'image3.jpg', potato: { x: 390, y: 30 }, found: false },
     { src: 'image4.jpg', potato: { x: 440, y: 100 }, found: false },
     { src: 'image5.jpg', potato: { x: 500, y: 200 }, found: false }
 ];
@@ -75,3 +75,4 @@ function showPrevImage() {
 
 // Initialize the game by showing the first image
 showImage(currentImageIndex);
+
